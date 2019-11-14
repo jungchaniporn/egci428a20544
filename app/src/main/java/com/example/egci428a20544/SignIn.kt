@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignIn : AppCompatActivity() {
     private var datasource: UsersDataSource? = null
@@ -25,6 +24,9 @@ class SignIn : AppCompatActivity() {
             val password = passWordText.text.toString()
             val condition = datasource!!.checkMatch(username,password)
             if (condition!=0){
+                Toast.makeText(applicationContext, "Login...", Toast.LENGTH_SHORT).show()
+                uNameText.setText("")
+                passWordText.setText("")
                 val intent = Intent(this,LoggedIn::class.java)
                 startActivity(intent)
             }else{

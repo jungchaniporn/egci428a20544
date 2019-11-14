@@ -2,6 +2,7 @@ package com.example.egci428a20544
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_show_all_users.*
 import kotlinx.android.synthetic.main.row_main.view.*
 
@@ -25,15 +27,13 @@ class ShowAllUsers : AppCompatActivity() {
         datasource!!.open()
 
         val values = datasource!!.allUsers
-        mainListView.adapter = myCustomAdapter(values)
-        datasource!!.close()
+        mainListView.adapter = myCustomAdapter(values,datasource!!)
+//        datasource!!.close()
     }
-    private class myCustomAdapter(userList:List<User>): BaseAdapter(){
+    private class myCustomAdapter(userList:ArrayList<User>, datasource: UsersDataSource): BaseAdapter(){
 //        private var datasource: UsersDataSource? = null
-        private val uUserList:List<User>
-        init {
-            uUserList = userList
-        }
+        private val uUserList:ArrayList<User> = userList
+        private val dDataSource:UsersDataSource = datasource
         override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup?): View {
             val rowMain: View
             if (convertView == null){
@@ -50,8 +50,9 @@ class ShowAllUsers : AppCompatActivity() {
 
             rowMain.setOnClickListener {
 //                var user:User = uUserList[position]
-//                datasource!!.deleteUser(uUserList[position])
-//                uUserList.remove(uUserList[position])
+                dDataSource!!.deleteUser(uUserList[position])
+                Log.d("Deleted","Id:"+position)
+                uUserList.remove(uUserList[position])
                 notifyDataSetChanged()
             }
             return rowMain

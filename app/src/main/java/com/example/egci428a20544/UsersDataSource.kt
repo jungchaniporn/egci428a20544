@@ -15,7 +15,7 @@ class UsersDataSource(context: Context) {
         private val allColumns = arrayOf<String>(MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_USERNAME)
 
         // make sure to close the cursor
-        val allUsers: List<User>
+        val allUsers: ArrayList<User>
             get() {
                 val users = ArrayList<User>()
 
