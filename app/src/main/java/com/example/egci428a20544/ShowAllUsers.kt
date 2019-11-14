@@ -26,10 +26,11 @@ class ShowAllUsers : AppCompatActivity() {
 
         val values = datasource!!.allUsers
         mainListView.adapter = myCustomAdapter(values)
+        datasource!!.close()
     }
     private class myCustomAdapter(userList:List<User>): BaseAdapter(){
+//        private var datasource: UsersDataSource? = null
         private val uUserList:List<User>
-        var user: User? = null
         init {
             uUserList = userList
         }
@@ -46,6 +47,13 @@ class ShowAllUsers : AppCompatActivity() {
             val viewHolder = rowMain.tag as ViewHolder
             viewHolder.userIdText.text = "User id is: $position"
             viewHolder.userNameShowText.text = "User Name is:"+uUserList[position].username
+
+            rowMain.setOnClickListener {
+//                var user:User = uUserList[position]
+//                datasource!!.deleteUser(uUserList[position])
+//                uUserList.remove(uUserList[position])
+                notifyDataSetChanged()
+            }
             return rowMain
         }
         private class ViewHolder(val userIdText: TextView, val userNameShowText: TextView)
@@ -75,3 +83,4 @@ class ShowAllUsers : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+

@@ -65,18 +65,25 @@ class UsersDataSource(context: Context) {
             return newUser
         }
 
-//        fun deleteComment(user: User) {
-//            val id = user.id
-//            println("Comment deleted with id: " + id)
-//            database!!.delete(MySQLiteHelper.TABLE_USERS, MySQLiteHelper.COLUMN_ID
-//                    + " = " + id, null)
-//        }
+        fun deleteUser(user: User) {
+            val id = user.id
+            database!!.delete(MySQLiteHelper.TABLE_USERS, MySQLiteHelper.COLUMN_ID
+                    + " = " + id, null)
+        }
         fun checkDuplicate(username: String): Int{
             val user = database!!.query(MySQLiteHelper.TABLE_USERS,
-                allColumns, MySQLiteHelper.COLUMN_USERNAME + " = " + "\""+username+"\"", null, null, null, null)
-            return user.count
+                allColumns, MySQLiteHelper.COLUMN_USERNAME + " = '$username'", null, null, null, null)
+            val num = user.count
+            return num
         }
-
+        fun checkMatch(username: String,password: String): Int{
+            val col_username = MySQLiteHelper.COLUMN_USERNAME
+            val col_password = MySQLiteHelper.COLUMN_PASSWORD
+            val user = database!!.query(MySQLiteHelper.TABLE_USERS,
+                allColumns, "$col_username = '$username' AND $col_password='$password'", null, null, null, null)
+            val num = user.count
+            return num
+        }
         private fun cursorToUser(cursor: Cursor): User {
             val user = User()
             user.id = cursor.getLong(0)

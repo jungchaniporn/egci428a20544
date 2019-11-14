@@ -20,7 +20,6 @@ class SignUp : AppCompatActivity() {
         datasource = UsersDataSource(this)
         datasource!!.open()
 
-        val values = datasource!!.allUsers
         var user: User? = null
         submitSignupBtn.setOnClickListener{
 
@@ -29,10 +28,13 @@ class SignUp : AppCompatActivity() {
             val password = passwordText.text.toString()
             if(password.length<8){
                 Toast.makeText(applicationContext, "Password is invalid", Toast.LENGTH_SHORT).show()
-            }else if(datasource!!.checkDuplicate(username)!=null){
+            }else if(datasource!!.checkDuplicate(username)!=0){
                 Toast.makeText(applicationContext, "Username is invalid", Toast.LENGTH_SHORT).show()
             }else{
                 user = datasource!!.createUser(username,password)
+                Toast.makeText(applicationContext, "Successfully signup", Toast.LENGTH_SHORT).show()
+                usernameText.setText("")
+                passwordText.setText("")
             }
         }
 
